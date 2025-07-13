@@ -4,15 +4,36 @@ First component of the LBRX SDK ecosystem. Replace MD file sharing via Tailscale
 
 ## 🚀 Installation
 
+### Option 1: One-Line Installer (Recommended)
 ```bash
 curl -LsSf https://raw.githubusercontent.com/LibraxisAI/lbrxChat/main/install.sh | sh
 ```
 
-This installer will:
-- Check system requirements (Python 3, macOS/Linux)
-- Install UV package manager if needed (recommended)
-- Set up lbrxChat in `~/.lbrxchat`
-- Add commands to your PATH
+### Option 2: Manual Installation
+```bash
+git clone https://github.com/LibraxisAI/lbrxChat.git
+cd lbrxChat
+uv sync
+```
+
+## 🏗️ Deployment Options
+
+### Personal Use (Single User)
+```bash
+# After installation:
+lbrx-chat                    # Start server on localhost:9310
+lbrx-chat-ai                 # Start AI assistants
+```
+
+### Team Deployment (Central Server)
+```bash
+# One team member hosts for everyone:
+git clone https://github.com/LibraxisAI/lbrxChat.git
+cd lbrxChat
+uv run python chat_server.py  # Server on 0.0.0.0:9310
+
+# Team connects via: http://YOUR-IP:9310
+```
 
 ## 🏃 Quick Start
 
