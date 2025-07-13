@@ -79,9 +79,9 @@ AI_PRIORITY = {
 import os
 
 # Configurable host and port with smart defaults
-# Port 1019 = Maciej's birthday (19.10) easter egg ⚖️
+# Port 9310 = Monika's birthday (93.10.1993) easter egg ⚖️
 CHAT_SERVER_HOST = os.environ.get('LBRX_CHAT_HOST', '0.0.0.0')
-CHAT_SERVER_PORT = int(os.environ.get('LBRX_CHAT_PORT', 1019))
+CHAT_SERVER_PORT = int(os.environ.get('LBRX_CHAT_PORT', 9310))
 
 MAX_RECENT_MESSAGES = 50
 POLLING_INTERVAL = 5

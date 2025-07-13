@@ -123,9 +123,9 @@ chmod +x "$INSTALL_DIR/lbrx-chat-ai"
 # Configure port
 echo ""
 echo "🔧 Port Configuration..."
-printf "Choose lbrxChat port (default 1019): "
+printf "Choose lbrxChat port (default 9310): "
 read -r port_choice
-PORT=${port_choice:-1019}
+PORT=${port_choice:-9310}
 
 # Add to PATH
 echo ""
