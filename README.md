@@ -1,188 +1,158 @@
-# Team Chat - Claude Code Integration
+# lbrxChat - Multi-AI Team Communication System
 
-Prosty chat system dla zespołu 3 humans + 3 AI, żeby zastąpić komunikację przez pliki .md w Tailscale.
+First component of the LBRX SDK ecosystem. Replace MD file sharing via Tailscale with real-time multi-AI team chat.
 
-## 🚀 Quick Start (2 minuty)
-
-```bash
-# Rozpakuj pliki
-cd team-chat-libraxis/
-
-# Uruchom (automatycznie zainstaluje dependencje)
-chmod +x start.sh
-./start.sh
-```
-
-Chat będzie dostępny w przeglądarce na `http://localhost:8000`
-
-## 📁 Struktura plików
-
-```
-team-chat-libraxis/
-├── chat_server.py           # Główny server (WebSocket + REST API)
-├── claude_chat_client.py    # Podstawowa integracja (single AI)  
-├── libraxis_integration.py  # Enhanced version (single AI)
-├── 🌟 multi_ai_integration.py # Multi-AI system (3 AI personalities)
-├── config.py               # Podstawowa konfiguracja
-├── config_libraxis.py      # Konfiguracja LibraxisAI (single)
-├── 🌟 config_multi_ai.py   # Konfiguracja Multi-AI
-├── requirements.txt        # Python dependencies
-├── start.sh               # Chat server launcher
-├── 🌟 start_ai.sh         # AI launcher (interactive)
-├── README.md              # Podstawowa dokumentacja
-├── 🌟 README_MULTI_AI.md  # Multi-AI dokumentacja
-└── SETUP.md              # Szczegółowe instrukcje
-```
-
-## ⚡ Jak to działa
-
-1. **Chat Server** - WebSocket server z prostym web interface
-2. **Claude Code** - łączy się przez HTTP API, polling co 5s
-3. **Zespół** - używa przeglądarki, real-time przez WebSocket
-
-## 🔧 Podstawowa konfiguracja
-
-### Zmień w `config.py`:
-```python
-CLAUDE_CODE_URL = "http://IP_CLAUDE:PORT/receive-message"
-```
-
-### Dla Claude Code:
-```python
-# W claude_chat_client.py
-chat_server_url = "http://IP_SERVERA:8000"
-```
-
-## 🌟 Multi-AI System (RECOMMENDED)
-
-Zamiast pojedynczego AI, użyjcie **Multi-AI system** z 3 personality:
+## 🚀 Installation
 
 ```bash
-# Interactive launcher
-./start_ai.sh
-
-# Lub bezpośrednio:
-python3 multi_ai_integration.py all        # Wszystkie AI
-python3 multi_ai_integration.py klaudiusz  # Tylko Klaudiusz (Maciej)
-python3 multi_ai_integration.py claude     # Tylko Claude (Monika)  
-python3 multi_ai_integration.py mikserka   # Tylko Mikserka (GPT)
+curl -LsSf https://raw.githubusercontent.com/LibraxisAI/lbrxChat/main/install.sh | sh
 ```
 
-### 🤖 AI Personalities:
-- 🔍 **Klaudiusz** (Claude Macieja) - code review, VISTY monitoring
-- 🤖 **Claude** (Moniki) - team coordination, general help  
-- 🎨 **Mikserka** (GPT) - creative solutions, brainstorming
+This installer will:
+- Check system requirements (Python 3, macOS/Linux)
+- Install UV package manager if needed (recommended)
+- Set up lbrxChat in `~/.lbrxchat`
+- Add commands to your PATH
 
-**Więcej info:** `README_MULTI_AI.md`
+## 🏃 Quick Start
 
-## 🌟 Single AI Integration (alternatywa)
+After installation, restart your terminal or run:
+```bash
+source ~/.zshrc  # or ~/.bashrc
+```
 
-Jeśli chcecie tylko 1 AI:
+Then:
+```bash
+# Start chat server
+lbrx-chat
+
+# In another terminal, start AI instances
+lbrx-chat-ai
+```
+
+Chat interface available at: `http://localhost:8000`
+
+## 🤖 Multi-AI System
+
+Three AI personalities working together:
+
+- 🔍 **Klaudiusz** - Code review, technical analysis, VISTY monitoring
+- 🤖 **Claude** - Team coordination, general assistance  
+- 🎨 **Mikserka** - Creative solutions, brainstorming
+
+### Starting specific AI:
+```bash
+lbrx-chat-ai klaudiusz  # Just Klaudiusz
+lbrx-chat-ai claude     # Just Claude
+lbrx-chat-ai mikserka   # Just Mikserka
+lbrx-chat-ai all        # All AI instances
+```
+
+## 🛠️ Manual Installation (for development)
+
+If you prefer manual setup:
 
 ```bash
-python3 libraxis_integration.py
+# Clone repository
+git clone https://github.com/LibraxisAI/lbrxChat.git
+cd lbrxChat
+
+# Install with UV
+uv sync
+
+# Run directly
+uv run python chat_server.py
+uv run python multi_ai_integration.py
 ```
 
-### Konfiguracja LibraxisAI w `config_libraxis.py`:
+## 📁 Project Structure
+
+```
+lbrxChat/
+├── chat_server.py           # Main WebSocket + REST server
+├── multi_ai_integration.py  # Multi-AI system 
+├── config_multi_ai.py       # AI personalities config
+├── pyproject.toml          # UV project definition
+├── install.sh              # One-line installer
+└── start-uv.sh             # UV launcher scripts
+```
+
+## ⚡ How It Works
+
+1. **Chat Server** - FastAPI WebSocket server with web interface
+2. **AI Integration** - Each AI polls for messages via HTTP
+3. **Team Access** - Real-time chat through browser WebSocket
+
+## 🔧 Configuration
+
+### AI Endpoints
+Edit `config_multi_ai.py`:
 ```python
 LIBRAXIS_API_BASE_URL = "https://llm.libraxis.cloud/api/v1"
-LIBRAXIS_API_KEY = ""  # Jeśli używacie
-LIBRAXIS_DEFAULT_MODEL = "your-model-name"
+LIBRAXIS_API_KEY = "your-key-if-needed"
 ```
 
-## 💬 Komendy dla Claude
-
-Claude automatycznie reaguje na:
-- `code review` → "Sprawdzam kod!"
-- `deploy` → "Sprawdzam deployment..."  
-- `bug` / `błąd` → "Analizuję raport błędu"
-- `claude?` → "Jestem tu!"
-- `status` → Pokazuje status Claude Code
-
-## 🤖 LibraxisAI Features
-
-- ✅ **Smart AI Responses** - używa waszych modeli LLM
-- ✅ **Conversation Context** - pamięta poprzednie wiadomości
-- ✅ **Fallback System** - działa nawet gdy LibraxisAI nie odpowiada
-- ✅ **Custom Prompts** - dostosowane do teamowych potrzeb
-- ✅ **Private Infrastructure** - wszystko zostaje w waszej sieci
-
-## 🔍 Monitoring
-
-Claude Code wyświetla w konsoli:
+### AI Personalities
+Each AI has triggers and custom behavior:
+```python
+AI_PERSONALITIES = {
+    "klaudiusz": {
+        "triggers": ["code", "review", "klaudiusz", "deploy"],
+        "style": "Technical expert, direct and thorough"
+    }
+}
 ```
-🤖 Claude Code + LibraxisAI - monitoring team chat...
-📊 Dostępne modele LibraxisAI: 5
-📨 Nowa wiadomość od Human1: sprawdź deployment
-✅ Odpowiedziałem: @Human1 Monitoruję deployment... 🚀
-```
+
+## 💬 AI Commands
+
+AIs respond to specific triggers:
+- `@klaudiusz review this` → Code review mode
+- `@claude help coordinate` → Team coordination  
+- `@mikserka brainstorm ideas` → Creative mode
+- `status` → Show all AI status
+
+## 🌟 Features
+
+- ✅ **Multi-AI Support** - 3 distinct AI personalities
+- ✅ **Real-time Chat** - WebSocket for instant messaging
+- ✅ **Context Awareness** - AIs remember conversation history
+- ✅ **Trigger System** - Smart keyword activation
+- ✅ **LibraxisAI Integration** - Use your own LLM models
+- ✅ **UV Powered** - Modern Python package management
 
 ## 🐛 Troubleshooting
 
-**Chat nie działa:**
+**Port already in use:**
 ```bash
-# Sprawdź czy port 8000 jest wolny
 lsof -i :8000
-
-# Uruchom ręcznie z logami
-python3 chat_server.py
+kill -9 <PID>
 ```
 
-**Claude nie odpowiada:**
+**AI not responding:**
+- Check console output for errors
+- Verify LibraxisAI endpoints in config
+- Ensure API keys are set if required
+
+**UV not found:**
 ```bash
-# Podstawowa wersja
-python3 claude_chat_client.py
-
-# Enhanced z LibraxisAI
-python3 libraxis_integration.py
-
-# Sprawdź URL w config files
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-**LibraxisAI nie działa:**
-- Sprawdź `https://status.libraxis.cloud`
-- Zweryfikuj URL w `config_libraxis.py`
-- Claude automatycznie przełączy się na fallback responses
+## 🚀 Future LBRX Components
 
-## 🚀 Rozszerzenia
+This is just the beginning:
+- `lbrx generate` - AI code generation
+- `lbrx sync` - API synchronization
+- `lbrx deploy` - Deployment automation
 
-### Dodaj nowe reakcje Claude:
-```python
-# W libraxis_integration.py, funkcja get_fallback_response()
-if "git status" in content:
-    return "📊 Checking git status..."
-```
+## 🤝 Contributing
 
-### Voice integration (z waszymi STT/TTS):
-```python
-# W config_libraxis.py
-STT_ENDPOINT = "https://stt.libraxis.cloud/api/v1/transcribe"
-TTS_ENDPOINT = "https://tts.libraxis.cloud/api/v1/synthesize"
-ENABLE_VOICE_FEATURES = True
-```
+This is a Gang of Bastards internal tool. Contributions welcome from team members.
 
-## 📊 Versions
+## 📝 License
 
-### Basic Version:
-- `claude_chat_client.py` - proste odpowiedzi, keyword matching
-- `config.py` - podstawowe ustawienia
-
-### Enhanced Version (Recommended):
-- `libraxis_integration.py` - AI-powered responses z waszymi modelami
-- `config_libraxis.py` - advanced configuration
-- Smart context awareness
-- Conversation memory
-- Custom prompts
-
-## 🔗 Przydatne linki
-
-- WebSocket test: `ws://localhost:8000/ws`
-- API docs: `http://localhost:8000/docs` (FastAPI auto-docs)
-- Messages API: `http://localhost:8000/api/messages`
-- LibraxisAI Status: `https://status.libraxis.cloud`
+Private repository - Gang of Bastards exclusive.
 
 ---
 
-**Problemy?** Sprawdź SETUP.md dla szczegółowych instrukcji lub napisz na chacie! 😉
-
-**Pro tip:** Użyjcie `libraxis_integration.py` zamiast podstawowego client'a - Claude będzie znacznie inteligentniejszy używając waszych własnych modeli LLM! 🧠✨
+**Issues?** Check the console output or reach out on the team chat itself! 🔄
