@@ -1,0 +1,30 @@
+[project]
+name = "lbrxChat"
+version = "0.1.0"
+description = "Gang of Bastards Multi-AI Team Chat - First LBRX SDK Component"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.104.1",
+    "uvicorn>=0.24.0",
+    "websockets>=12.0",
+    "requests>=2.31.0",
+    "pydantic>=2.5.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.4.3",
+    "black>=23.11.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+lbrx-chat = "chat_server:main"
+lbrx-chat-ai = "multi_ai_integration:main"
+lbrx-chat-klaudiusz = "multi_ai_integration:run_klaudiusz"
+lbrx-chat-claude = "multi_ai_integration:run_claude"
+lbrx-chat-mikserka = "multi_ai_integration:run_mikserka"
