@@ -76,8 +76,13 @@ AI_PRIORITY = {
 }
 
 # === BASIC CHAT SETTINGS ===
-CHAT_SERVER_HOST = "0.0.0.0"
-CHAT_SERVER_PORT = 8000
+import os
+
+# Configurable host and port with smart defaults
+# Port 1019 = Maciej's birthday (19.10) easter egg ⚖️
+CHAT_SERVER_HOST = os.environ.get('LBRX_CHAT_HOST', '0.0.0.0')
+CHAT_SERVER_PORT = int(os.environ.get('LBRX_CHAT_PORT', 1019))
+
 MAX_RECENT_MESSAGES = 50
 POLLING_INTERVAL = 5
 DATABASE_FILE = "chat.db"

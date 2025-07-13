@@ -30,7 +30,7 @@ lbrx-chat
 lbrx-chat-ai
 ```
 
-Chat interface available at: `http://localhost:8000`
+Chat interface available at: `http://localhost:1019`
 
 ## 🤖 Multi-AI System
 

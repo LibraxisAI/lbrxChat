@@ -8,6 +8,7 @@ from datetime import datetime
 from typing import List
 import requests
 from pydantic import BaseModel
+from config_multi_ai import CHAT_SERVER_HOST, CHAT_SERVER_PORT
 
 app = FastAPI()
 
@@ -177,7 +178,10 @@ async def get_chat():
     </div>
 
     <script>
-        const ws = new WebSocket('ws://localhost:8000/ws');
+        // Use current window location for WebSocket to support any port
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsHost = window.location.host;
+        const ws = new WebSocket(`${wsProtocol}//${wsHost}/ws`);
         const messages = document.getElementById('messages');
         const messageInput = document.getElementById('messageInput');
         
@@ -231,6 +235,12 @@ async def get_chat():
 </html>
     """)
 
-if __name__ == "__main__":
+def main():
+    """Main entry point for lbrx-chat command"""
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    print(f"🚀 Starting lbrxChat server on {CHAT_SERVER_HOST}:{CHAT_SERVER_PORT}")
+    print(f"📖 Access chat at: http://localhost:{CHAT_SERVER_PORT}")
+    uvicorn.run(app, host=CHAT_SERVER_HOST, port=CHAT_SERVER_PORT)
+
+if __name__ == "__main__":
+    main()

@@ -120,6 +120,13 @@ cd "$HOME/.lbrxchat/repo" && uv run python multi_ai_integration.py "$@"
 EOF
 chmod +x "$INSTALL_DIR/lbrx-chat-ai"
 
+# Configure port
+echo ""
+echo "🔧 Port Configuration..."
+printf "Choose lbrxChat port (default 1019): "
+read -r port_choice
+PORT=${port_choice:-1019}
+
 # Add to PATH
 echo ""
 echo "🔧 Setting up shell integration..."
@@ -127,11 +134,12 @@ echo "🔧 Setting up shell integration..."
 add_to_path() {
     local shell_rc="$1"
     if [ -f "$shell_rc" ]; then
-        if ! grep -q "lbrxchat/bin" "$shell_rc"; then
+        if ! grep -q "lbrxchat" "$shell_rc"; then
             echo "" >> "$shell_rc"
-            echo "# lbrxChat" >> "$shell_rc"
+            echo "# lbrxChat Configuration" >> "$shell_rc"
             echo "export PATH=\"\$HOME/.lbrxchat:\$PATH\"" >> "$shell_rc"
-            echo "✓ Added to $shell_rc"
+            echo "export LBRX_CHAT_PORT=$PORT" >> "$shell_rc"
+            echo "✓ Added to $shell_rc (port: $PORT)"
         fi
     fi
 }

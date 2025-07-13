@@ -9,7 +9,8 @@ import random
 from config_multi_ai import (
     AI_MEMBERS, AI_PERSONALITIES, AI_MODEL_MAPPING, 
     MULTI_AI_RESPONSE_STRATEGY, AI_PRIORITY, CUSTOM_PROMPTS,
-    LIBRAXIS_API_BASE_URL, LIBRAXIS_API_KEY, ENABLE_AI_TO_AI_CHAT
+    LIBRAXIS_API_BASE_URL, LIBRAXIS_API_KEY, ENABLE_AI_TO_AI_CHAT,
+    CHAT_SERVER_HOST, CHAT_SERVER_PORT
 )
 
 class LibraxisAIClient:
@@ -67,10 +68,10 @@ class LibraxisAIClient:
 class MultiAITeamChatClient:
     """Enhanced client dla 3 AI w zespole"""
     
-    def __init__(self, ai_name: str, chat_server_url: str = "http://localhost:8000"):
+    def __init__(self, ai_name: str, chat_server_url: str = None):
         self.ai_name = ai_name
         self.ai_config = AI_MEMBERS[ai_name]
-        self.chat_url = chat_server_url
+        self.chat_url = chat_server_url or f"http://{CHAT_SERVER_HOST}:{CHAT_SERVER_PORT}"
         self.last_message_timestamp = None
         self.libraxis_client = LibraxisAIClient()
         self.conversation_context = []
